@@ -9,4 +9,3 @@ from utils.s3 import upload_file_to_s3
 def upload_file_to_s3_task(file, s3_key):
     upload_file_to_s3(file, s3_key)
 
-# celery -A file_manager worker -P gevent -l info

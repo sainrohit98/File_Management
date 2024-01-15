@@ -2,9 +2,9 @@ from file_app.tasks import upload_file_to_s3_task
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.decorators import api_view, permission_classes
-from utils.s3 import upload_file_to_s3, delete_file_from_s3, rename_file_in_s3, get_file
+from utils.s3 import  delete_file_from_s3, rename_file_in_s3, get_file
 from  .models import UploadedFile
-
+from file_manager.config import MAX_FILE_SIZE_BYTES
 from rest_framework.permissions import IsAuthenticated
 from django.contrib.auth.models import User 
 from django.contrib.auth import authenticate
@@ -45,9 +45,8 @@ def upload_file(request):
             validate_extension(file)
 
             # Validate file size
-            max_file_size_bytes = 10 * 1024 * 1024  # 10 MB
 
-            if file.size > max_file_size_bytes:
+            if file.size > MAX_FILE_SIZE_BYTES:
                 return Response({'message': f'File size exceeds the maximum limit of 10 MB.'}, status=400)
 
             # Generate a unique key for your S3 object, e.g., using the file name
